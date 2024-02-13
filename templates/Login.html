@@ -1,0 +1,14 @@
+{% extends 'master.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+    <form action={% url 'login' %} method="POST" >
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Submit</button>
+    </form>
+    <a href="{% url 'signup' %}">signup</a>
+{% endblock %}
