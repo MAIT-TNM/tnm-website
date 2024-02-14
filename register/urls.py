@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import register
+from .views import paymenthandler, pay
 urlpatterns = [
-    path("Register/<name>", register, name='register')
+    path("Register/<name>", pay, name='register'),
+    path('paymenthandler/<name>', paymenthandler, name='paymenthandler'),
 ]

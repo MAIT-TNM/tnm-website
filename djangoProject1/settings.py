@@ -138,3 +138,8 @@ EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ishaansangwan@gmail.com'
 EMAIL_HOST_PASSWORD = 'wylq kxcx zvzh otlo'
+############################################################################
+
+
+RAZOR_KEY_ID = "rzp_test_OiLIez9YW6qDhv"
+RAZOR_KEY_SECRET = "JRFTJHWzaZqmKv5ifoYepTM9"
