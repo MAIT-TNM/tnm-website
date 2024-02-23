@@ -141,5 +141,5 @@ EMAIL_HOST_PASSWORD = 'wylq kxcx zvzh otlo'
 ############################################################################
 
 
-RAZOR_KEY_ID = "rzp_test_OiLIez9YW6qDhv"
-RAZOR_KEY_SECRET = "JRFTJHWzaZqmKv5ifoYepTM9"
+RAZOR_KEY_ID = "rzp_test_lgXnrlnr3w35wr"
+RAZOR_KEY_SECRET = "Vd1cWILIiZfdgTlmrrq44ISr"

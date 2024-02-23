@@ -4,6 +4,9 @@ from .models import NewUser
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.conf import settings
+
+
+
 # Create your views here.
 def SignUp(request):
     if request.method == "GET":
