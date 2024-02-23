@@ -13,3 +13,8 @@ class Participation(models.Model):
     particpant_email = models.ForeignKey(NewUser,on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     phone = models.IntegerField(null=True)
+    #
+    # event = Event.objects.get(event_name=name)
+    # user = NewUser.objects.get(email=request.user)
+    # registration = Participation(particpant_email=user, event=event, phone=user.phone)
+    # registration.save()

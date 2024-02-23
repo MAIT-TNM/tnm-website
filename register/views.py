@@ -1,10 +1,11 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse, redirect
 from Home.models import Event, Participation
 from Login.models import NewUser
 from django.conf import settings
 import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest
+import urllib.parse
 # Create your views here.
 
 razorpay_client = razorpay.Client(
@@ -13,20 +14,23 @@ razorpay_client = razorpay.Client(
 def pay(request,name):
     currency = 'INR'
     amount = 100
+
     razorpay_order = razorpay_client.order.create(dict(amount=amount,
                                                        currency=currency,
                                                        payment_capture='0'))
 
     razorpay_order_id = razorpay_order['id']
-    callback_url = f'paymenthandler/{name}'
+    callback_url = f"http://localhost:8000{urllib.parse.quote(f'/paymenthandler/{name}')}"
 
+    # callback_url = 'paymenthandler'
 
     context = {}
     context['razorpay_order_id'] = razorpay_order_id
-    context['rayzorpay_merchant_key'] =settings.RAZOR_KEY_ID
+    context['rayzorpay_merchant_key'] = settings.RAZOR_KEY_ID
     context['amount'] = amount
     context["currency"] = currency
     context['callback_url'] = callback_url
+    context['secret'] = settings.RAZOR_KEY_SECRET
     print(context)
     return render(request, 'Register.html', context=context)
 
@@ -51,26 +55,30 @@ def paymenthandler(request,name):
             result = razorpay_client.utility.verify_payment_signature(
                 params_dict)
             if result is not None:
-                amount = 20000  # Rs. 200
+                amount = 100  # Rs. 200
                 try:
 
                     # capture the payemt
                     razorpay_client.payment.capture(payment_id, amount)
-                    event = Event.objects.get(event_name=name)
-                    user = NewUser.objects.get(email=request.user)
-                    registration = Participation(particpant_email=user, event=event, phone=user.phone)
-                    registration.save()
-
+                    try:
+                        print(request.user)
+                        event = Event.objects.get(event_name=name)
+                        user = NewUser.objects.get(email=str(request.user))
+                        registration = Participation(particpant_email=user, event=event, phone=user.phone)
+                        registration.save()
+                    except Exception as e:
+                        print(e)
+                    print("success")
                     # render success page on successful caputre of payment
-                    return render(request, 'paymentsuccess.html')
+                    return redirect('/Home/')
                 except:
-
+                    print("failure")
                     # if there is an error while capturing payment.
-                    return render(request, 'paymentfail.html')
+                    return redirect(f'/Register/{name}')
             else:
 
                 # if signature verification fails.
-                return render(request, 'paymentfail.html')
+                return redirect(f'/Register/{name}')
         except:
 
             # if we don't find the required parameters in POST data
