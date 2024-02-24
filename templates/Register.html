@@ -1,14 +1,18 @@
+{% extends 'master.html' %}
+{% block title %} Register {% endblock %}
+
+{% block content %}
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <form action="" method="POST">
    <input type="hidden" name="order_id" value="{{ order_id }}">
     hello
-{#    {% url {{ callback_url }} %}#}
-    {{ callback_url }}
-{#    {% url 'register' %}#}
     {% csrf_token %}
    <button id="rzp-button1">Pay</button>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
+{% endblock %}
+    {% block script %}
+        <script>
     var urls = "{{ callback_url }}"
     {#var cbu = {% url urls %}#}
 var options = {
@@ -34,4 +38,5 @@ document.getElementById('rzp-button1').onclick = function(e){
     e.preventDefault();
 }
 </script>
+{% endblock %}
 </form>

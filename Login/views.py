@@ -38,12 +38,12 @@ def Login(request):
         user = authenticate(email=data["email"], password=data["password"])
         if user is not None:
             login(request, user)
-            return redirect("/Home/")
+            return redirect("/")
         else:
             return redirect('/Login/')
     else:
         if request.user.is_authenticated:
-            return redirect("/Home/")
+            return redirect("")
         context = {}
         context['form'] = LoginForm
         return render(request,'Login.html', context)

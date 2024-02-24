@@ -1,0 +1,25 @@
+#navbar{
+    margin: 0;
+    overflow: hidden;
+    /*background-color: #333333;*/
+}
+.navbar-item{
+    float: right;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.navbar-item a{
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+
+}
+ul {
+    list-style-type: none;
+    padding: 0px;
+}
+body{
+    background-image: url("https://r4.wallpaperflare.com/wallpaper/940/421/261/artwork-fantasy-art-digital-art-galaxy-wallpaper-8be67cfd93b1df69b5447bd9bdec5c10.jpg");
+}

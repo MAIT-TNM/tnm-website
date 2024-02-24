@@ -70,7 +70,7 @@ def paymenthandler(request,name):
                         print(e)
                     print("success")
                     # render success page on successful caputre of payment
-                    return redirect('/Home/')
+                    return redirect('/')
                 except:
                     print("failure")
                     # if there is an error while capturing payment.
