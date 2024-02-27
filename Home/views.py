@@ -5,7 +5,7 @@ def Home(request):
     if request.user.is_authenticated:
         print(request.user)
         events = Event.objects.all().values()
-        context = {"events":events}
+        context = {"events":events,"superuser":request.user.is_superuser}
         return render(request, "Home.html",context=context)
     else:
         return redirect("/Login/")
