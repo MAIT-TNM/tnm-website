@@ -17,8 +17,12 @@ Home
         <li><a href="/Register/{{ x.event_name }}">{{ x.event_name }}</a></li>
     {% endfor %}
 
+
+    {% if superuser %}
+        <a href="/data">get data</a>
+    {% endif %}
     </ul>
-    <a href={% url 'logout' %}>logout</a>
+{#    <a href={% url 'logout' %}>logout</a>#}
 
 {% endblock %}
 

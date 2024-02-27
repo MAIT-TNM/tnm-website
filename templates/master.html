@@ -21,11 +21,11 @@
         <ul>
             <span>
                 <li class="navbar-item-left">
-                    <img src="https://tnm.mait.ac.in/images/logotsm.png" alt="tnm logo" id="logo">
+                    <a href="{% url 'Home' %}"><img src="https://tnm.mait.ac.in/images/logotsm.png" alt="tnm logo" id="logo"></a>
                 </li>
             </span>
             <span id="links">
-                <li class="navbar-item-right">Logout</li>
+                <li class="navbar-item-right"><a href=" {% url 'logout' %}">Logout </a></li>
                 <li class="navbar-item-right">Events</li>
                 <li class="navbar-item-right"><a href="{% url 'Home' %}">Home</a></li>
 
