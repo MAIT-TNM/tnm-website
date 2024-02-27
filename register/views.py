@@ -1,4 +1,5 @@
 from django.shortcuts import render,HttpResponse, redirect
+from django.http import JsonResponse
 from Home.models import Event, Participation
 from Login.models import NewUser
 from django.conf import settings
@@ -6,6 +7,8 @@ import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest
 import urllib.parse
+import requests
+from .models import Payments
 # Create your views here.
 
 razorpay_client = razorpay.Client(
@@ -21,8 +24,12 @@ def pay(request,name):
 
     razorpay_order_id = razorpay_order['id']
     callback_url = f"http://localhost:8000{urllib.parse.quote(f'/paymenthandler/{name}')}"
-
+########################################################################################################################
     # callback_url = 'paymenthandler'
+    event = Event.objects.get(event_name=name)
+    payment = Payments(order_id=razorpay_order_id, user_id=request.user, event_id=event.event_id)
+    payment.save()
+########################################################################################################################
 
     context = {}
     context['razorpay_order_id'] = razorpay_order_id
@@ -39,50 +46,54 @@ def pay(request,name):
 def paymenthandler(request,name):
     # only accept POST request.
     if request.method == "POST":
-        try:
 
-            # get the required parameters from post request.
-            payment_id = request.POST.get('razorpay_payment_id', '')
-            razorpay_order_id = request.POST.get('razorpay_order_id', '')
-            signature = request.POST.get('razorpay_signature', '')
-            params_dict = {
-                'razorpay_order_id': razorpay_order_id,
-                'razorpay_payment_id': payment_id,
-                'razorpay_signature': signature
-            }
 
-            # verify the payment signature.
-            result = razorpay_client.utility.verify_payment_signature(
-                params_dict)
-            if result is not None:
-                amount = 100  # Rs. 200
+        # get the required parameters from post request.
+        payment_id = request.POST.get('razorpay_payment_id', '')
+        razorpay_order_id = request.POST.get('razorpay_order_id', '')
+        signature = request.POST.get('razorpay_signature', '')
+        params_dict = {
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_payment_id': payment_id,
+            'razorpay_signature': signature,
+        }
+        # requests.post("http://localhost:5000/Regi/", data=params_dict)
+        # verify the payment signature.
+        result = razorpay_client.utility.verify_payment_signature(
+            params_dict)
+        # return redirect("/")
+        if result is not None:
+            amount = 100  # Rs. 200
+            try:
+        #
+                # capture the payemt
+                razorpay_client.payment.capture(payment_id, amount)
                 try:
+                    print(request.user)
+                    # event = Event.objects.get(event_name=name)
+                    # user = NewUser.objects.get(email=str(request.user))
+                    # registration = Participation(particpant_email=user, event=event, phone=user.phone)
+        #             # registration.save()
+                    payment = Payments.objects.get(order_id=razorpay_order_id)
+                    payment.payment_success = True
+                    payment.save()
 
-                    # capture the payemt
-                    razorpay_client.payment.capture(payment_id, amount)
-                    try:
-                        print(request.user)
-                        event = Event.objects.get(event_name=name)
-                        user = NewUser.objects.get(email=str(request.user))
-                        registration = Participation(particpant_email=user, event=event, phone=user.phone)
-                        registration.save()
-                    except Exception as e:
-                        print(e)
-                    print("success")
-                    # render success page on successful caputre of payment
-                    return redirect('/')
-                except:
-                    print("failure")
-                    # if there is an error while capturing payment.
-                    return redirect(f'/Register/{name}')
-            else:
-
-                # if signature verification fails.
+                    # print(payment.id)
+                    return redirect("/")
+                except Exception as e:
+                    print(e)
+                    return HttpResponseBadRequest
+        #         print("success")
+        #         # render success page on successful caputre of payment
+        #         return redirect('/')
+            except:
+                print("failure")
+        #         # if there is an error while capturing payment.
                 return redirect(f'/Register/{name}')
-        except:
+        # else:
+        #
+        #     # if signature verification fails.
+        #     return redirect(f'/Register/{name}')
 
-            # if we don't find the required parameters in POST data
-            return HttpResponseBadRequest()
-    else:
-        # if other than POST request is made.
-        return HttpResponseBadRequest()
+
+
