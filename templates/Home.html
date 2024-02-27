@@ -1,14 +1,23 @@
 {% extends "master.html" %}
+{% load static %}
+
+
 {% block title %}
 Home
 {% endblock %}
 
+
 {% block content %}
+
     our events are
     <br>
+    <ul id="events">
+
     {% for x in events %}
         <li><a href="/Register/{{ x.event_name }}">{{ x.event_name }}</a></li>
     {% endfor %}
+
+    </ul>
     <a href={% url 'logout' %}>logout</a>
 
 {% endblock %}
