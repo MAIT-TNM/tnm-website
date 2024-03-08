@@ -12,7 +12,7 @@ ENV PYTHONUNBUFFERED=1
 # Install pip requirements
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
-
+# RUN apt install psycopg 
 WORKDIR /app
 COPY . /app
 

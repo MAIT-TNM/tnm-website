@@ -6,6 +6,9 @@ class Event (models.Model):
     event_name = models.CharField(max_length=20, unique=True)
     event_date = models.DateTimeField()
     event_incharge = models.CharField(max_length=20)
+    event_discpription = models.TextField(null=True)
+    event_photo = models.ImageField(null=True, upload_to="Home/static")
+    
     def __str__(self):
         return self.event_name
 class Participation(models.Model):
