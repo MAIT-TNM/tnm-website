@@ -2,9 +2,10 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 import csv
 from register.models import Payments
+from rest_framework.views import APIView, Response
 from Login.models import NewUser
 from Home.models import Event
-
+from .serializers import PaymentsSerializer
 # Create your views here.
 def EventData(request):
 
@@ -23,3 +24,9 @@ def EventData(request):
 		return response
 	else:
 		return redirect("/")
+
+# class EventAPI(APIView):
+# 	queryset = Payments.objects.filter(payment_success=True)
+# 	def get(self, request, *args, **kwargs):
+#
+# 		serialised = PaymentsSerializer(data = queryset, many=True)

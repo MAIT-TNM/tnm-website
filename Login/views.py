@@ -4,7 +4,8 @@ from .models import NewUser
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.conf import settings
-
+from rest_framework.views import APIView, Response
+from .serialzer import UserSerializer
 
 
 # Create your views here.
@@ -18,7 +19,7 @@ def SignUp(request):
         if login_form.is_valid():
             data = login_form.cleaned_data
             try:
-                user = NewUser.objects.create_user(email=data["email"], phone=data["email"], password=data["password"])
+                user = NewUser.objects.create_user(email=data["email"], phone=data["phone"], password=data["password"])
                 user.save()
                 send_mail(
                     "TnM Registration",
@@ -52,3 +53,14 @@ def Logout(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect("/Login/")
+
+
+class SignUpAPI(APIView):
+    def post(self, request, *args, **kwargs):
+        data = request.data.copy()
+        serialised = UserSerializer(data=data)
+        if serialised.is_valid():
+            print(serialised.validated_data)
+            serialised.save()
+        return HttpResponse("hello")
+
