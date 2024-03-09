@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'rest_framework',
+    'django_sse',
+    'corsheaders',
     'Login',
     "Home",
     "register",
@@ -53,9 +55,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware'
 ]
-
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    # 'file:///C:/Users/ishaa/OneDrive/Desktop/test.html'
+]
 ROOT_URLCONF = 'djangoProject1.urls'
 
 TEMPLATES = [
