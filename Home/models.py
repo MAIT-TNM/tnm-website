@@ -16,7 +16,10 @@ class Event (models.Model):
     event_genre = models.CharField(choices=GENRES, max_length=10, default="sports")
     event_photo = models.ImageField(null=True, upload_to="Home/static")
     event_incharge_contact = models.IntegerField(null=True)
-    
+    event_rules = models.TextField(null=True)
+    society_name = models.CharField(null=True, max_length=25)
+    entry_fees = models.IntegerField(null=True)
+    prize_pool = models.IntegerField(null=True)
     def __str__(self):
         return self.event_name
 class Participation(models.Model):
