@@ -34,7 +34,7 @@ def pay(request,name):
 
     context = {}
     context['razorpay_order_id'] = razorpay_order_id
-    context['key'] = settings.RAZOR_KEY_ID
+    context['key'] = "rzp_test_lgXnrlnr3w35wr"
     context['amount'] = amount
     context["currency"] = currency
     context['callback_url'] = callback_url
@@ -70,7 +70,7 @@ def paymenthandler(request,name):
                 # capture the payemt
                 razorpay_client.payment.capture(payment_id, amount)
                 try:
-                    print(request.user)
+                    # print(request.user)
                     # event = Event.objects.get(event_name=name)
                     # user = NewUser.objects.get(email=str(request.user))
                     # registration = Participation(particpant_email=user, event=event, phone=user.phone)

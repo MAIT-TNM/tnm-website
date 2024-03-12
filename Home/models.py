@@ -44,6 +44,7 @@ class Participation(models.Model):
     fourth_college = models.CharField(max_length=40, null=True)
 
     team_name = models.CharField(max_length=20, null=True)
+    leader_email = models.EmailField(null=True)
     # payment_success = models.BooleanField(default=False)
         
         
