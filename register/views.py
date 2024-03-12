@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest
 import urllib.parse
 import requests
+import json
 from .models import Payments
 # Create your views here.
 
@@ -27,19 +28,19 @@ def pay(request,name):
 ########################################################################################################################
     # callback_url = 'paymenthandler'
     event = Event.objects.get(event_name=name)
-    payment = Payments(order_id=razorpay_order_id, user_id=request.user, event_id=event.event_id)
+    payment = Payments(order_id=razorpay_order_id, event_id=event.event_id)
     payment.save()
 ########################################################################################################################
 
     context = {}
     context['razorpay_order_id'] = razorpay_order_id
-    context['rayzorpay_merchant_key'] = settings.RAZOR_KEY_ID
+    context['key'] = settings.RAZOR_KEY_ID
     context['amount'] = amount
     context["currency"] = currency
     context['callback_url'] = callback_url
     context['secret'] = settings.RAZOR_KEY_SECRET
     print(context)
-    return render(request, 'Register.html', context=context)
+    return JsonResponse(json.dumps(context), safe=False)
 
 
 @csrf_exempt
@@ -76,6 +77,7 @@ def paymenthandler(request,name):
         #             # registration.save()
                     payment = Payments.objects.get(order_id=razorpay_order_id)
                     payment.payment_success = True
+                    payment.participant.payment_success = True
                     payment.save()
 
                     # print(payment.id)
