@@ -19,7 +19,7 @@ dataclasses-json==0.5.8
 debugpy==1.8.0
 decorator==5.1.1
 defusedxml==0.7.1
-Django==5.0
+Django
 django-allauth==0.61.1
 django-cors-headers==4.3.1
 django-crispy-forms==2.1
