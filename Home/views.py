@@ -25,3 +25,17 @@ class HomeAPI(APIView):
             print(e)
             return Response(status=HTTP_400_BAD_REQUEST)
 
+class RegisterAPI(APIView):
+    serialiser_class = ParticipationSerializer
+    def post(self, request, format=None):
+        data = request.data.copy()
+        print(data)
+        # print(data[0])
+        serialized = self.serialiser_class(data=data["members"], many=True)
+        if serialized.is_valid():
+            serialized.save()
+            return Response({"message": "Registration successful"}, status=HTTP_200_OK)
+        else:
+            # print(serialized.data)
+            return Response({"errors": serialized.errors}, status=HTTP_400_BAD_REQUEST)
+        

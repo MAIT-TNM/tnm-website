@@ -10,3 +10,4 @@ class ParticipationSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Participation
 		fields = '__all__'
+		
