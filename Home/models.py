@@ -29,39 +29,23 @@ class Participation(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     # phone = models.IntegerField(null=True)
     first_name = models.CharField(max_length=20, null=True)
-    second_name = models.CharField(max_length=20, null=True)
-    third_name = models.CharField(max_length=20, null=True)
-    fourth_name = models.CharField(max_length=20, null=True)
+    second_name = models.CharField(max_length=20, null=True, default=None, blank=True)
+    third_name = models.CharField(max_length=20, null=True,blank=True)
+    fourth_name = models.CharField(max_length=20, null=True,blank=True)
 
-    first_phone = models.CharField(default="0", max_length=10)
-    second_phone= models.CharField(null=True, max_length=10)
-    third_phone= models.CharField(null=True, max_length=10)
-    fourth_phone= models.CharField(null=True, max_length=10)
+    first_phone = models.CharField(default="0", max_length=10,blank=True)
+    second_phone= models.CharField(null=True, max_length=10,blank=True)
+    third_phone= models.CharField(null=True, max_length=10,blank=True)
+    fourth_phone= models.CharField(null=True, max_length=10,blank=True)
 
-    first_college = models.CharField(max_length=40, null=True)
-    second_college = models.CharField(null=True, max_length=40)
-    third_college = models.CharField(max_length=40, null=True)
-    fourth_college = models.CharField(max_length=40, null=True)
+    first_college = models.CharField(max_length=40, null=True,blank=True)
+    second_college = models.CharField(null=True, max_length=40,blank=True)
+    third_college = models.CharField(max_length=40, null=True,blank=True)
+    fourth_college = models.CharField(max_length=40, null=True,blank=True)
 
-    team_name = models.CharField(max_length=20, null=True)
-    leader_email = models.EmailField(null=True)
-    # payment_success = models.BooleanField(default=False)
-        
-        
-        
-        
-        
-        
-        
-        
+    team_name = models.CharField(max_length=20, null=True,blank=True)
+    leader_email = models.EmailField(null=True, unique=True,blank=True)
+    payment_success = models.BooleanField(default=False,blank=True)
 
-    
-    
-
-
-
-    #
-    # event = Event.objects.get(event_name=name)
-    # user = NewUser.objects.get(email=request.user)
-    # registration = Participation(particpant_email=user, event=event, phone=user.phone)
-    # registration.save()
+    def __str__(self):
+        return self.event.event_name

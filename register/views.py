@@ -10,12 +10,13 @@ import urllib.parse
 import requests
 import json
 from .models import Payments
+from django.core.mail import send_mail
 # Create your views here.
 
 razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
 
-def pay(request,name):
+def pay(request,name, *args, **kwargs):
     currency = 'INR'
     amount = 100
 
@@ -28,7 +29,10 @@ def pay(request,name):
 ########################################################################################################################
     # callback_url = 'paymenthandler'
     event = Event.objects.get(event_name=name)
-    payment = Payments(order_id=razorpay_order_id, event_id=event.event_id)
+    email = request.GET.get("email")
+    print(email)
+    participant = Participation.objects.get(leader_email=email, event=event)
+    payment = Payments(order_id=razorpay_order_id, event_id=event.event_id, participant=participant)
     payment.save()
 ########################################################################################################################
 
@@ -70,15 +74,17 @@ def paymenthandler(request,name):
                 # capture the payemt
                 razorpay_client.payment.capture(payment_id, amount)
                 try:
-                    # print(request.user)
-                    # event = Event.objects.get(event_name=name)
-                    # user = NewUser.objects.get(email=str(request.user))
-                    # registration = Participation(particpant_email=user, event=event, phone=user.phone)
-        #             # registration.save()
                     payment = Payments.objects.get(order_id=razorpay_order_id)
                     payment.payment_success = True
-                    payment.participant.payment_success = True
+                    # payment.participant.payment_success = True
                     payment.save()
+                    send_mail(
+                        "TNM confirmation",
+                        f'congrats participant for successfully registering for MAIT T&M in the {payment.event.event_name} event \n'
+                        f'your event will be held on {payment.event.event_date}',
+                        settings.EMAIL_HOST_USER,
+                        [f'{payment.participant.leader_email}']
+                    )
 
                     # print(payment.id)
                     return redirect("/")
