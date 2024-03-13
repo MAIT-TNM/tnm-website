@@ -1,25 +1,77 @@
-#navbar{
-    margin: 0;
-    overflow: hidden;
-    /*background-color: #333333;*/
-}
-.navbar-item{
-    float: right;
-    margin-left: 10px;
-    cursor: pointer;
-}
-.navbar-item a{
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 16px;
-  text-decoration: none;
 
-}
-ul {
+ul{
     list-style-type: none;
     padding: 0px;
 }
+
+#events{
+    display: flex;
+}
+
+#events li{
+    padding-left: 16px;
+
+}
+
+#events li a{
+    color:white;
+    text-decoration: none;
+}
+
+#background{
+
+    z-index:-1;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+}
+
+#background {
+    top: 0;
+    left: 0;
+}
+
 body{
-    background-image: url("https://r4.wallpaperflare.com/wallpaper/940/421/261/artwork-fantasy-art-digital-art-galaxy-wallpaper-8be67cfd93b1df69b5447bd9bdec5c10.jpg");
+    color:white;
+}
+
+#logo{
+    height: 4vh;
+}
+
+.navbar-item-left{
+    float: left;
+}
+
+#navbar{
+    margin: 0;
+    overflow: hidden;
+    display: grid;
+    grid-template-column: 5vh auto 6vh;
+    /*background-color: #333333;*/
+}
+
+#links{
+    /*justify-items: center;*/
+    /*display: flex;*/
+}
+
+.navbar-item-right{
+    float: right;
+    /*display: flex;*/
+    margin-left: 10px;
+    cursor: pointer;
+
+}
+.navbar-item-right{
+    padding: 1.5vh;
+  display: block;
+  color: white;
+  text-align: center;
+  /*padding-right: 16px;*/
+
+}
+a {
+    text-decoration: none;
+    color: white;
 }
