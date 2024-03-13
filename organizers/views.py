@@ -13,13 +13,13 @@ def EventData(request):
 		queryset = Payments.objects.filter(payment_success=True)
 		data = []
 		for i in queryset:
-			data.append([str(i.event),str(i.user_id),i.user_id.phone])
+			data.append([str(i.event),str(i.participant.team_name),str(i.participant.leader_email),str(i.participant.first_phone), str(i.participant.first_name)])
 			print(i)
 		print(data)
 		response = HttpResponse(content_type="text/csv")
 		response["Content-Disposition"] = 'attachment; filename="data.csv"'
 		writer = csv.writer(response)
-		writer.writerow(["event name", 'email', 'phone', ])  # Replace with actual field names
+		writer.writerow(["event name",'team_name', 'email', 'phone','leader name' ])  # Replace with actual field names
 		writer.writerows(data)
 		return response
 	else:
