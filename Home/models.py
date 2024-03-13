@@ -44,7 +44,7 @@ class Participation(models.Model):
     fourth_college = models.CharField(max_length=40, null=True,blank=True)
 
     team_name = models.CharField(max_length=20, null=True,blank=True)
-    leader_email = models.EmailField(null=True, unique=True,blank=True)
+    leader_email = models.CharField(null=True,blank=True, max_length=50)
     payment_success = models.BooleanField(default=False,blank=True)
 
     def __str__(self):

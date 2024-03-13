@@ -11,6 +11,7 @@ import requests
 import json
 from .models import Payments
 from django.core.mail import send_mail
+from rest_framework.views import APIView
 # Create your views here.
 
 razorpay_client = razorpay.Client(
@@ -44,7 +45,7 @@ def pay(request,name, *args, **kwargs):
     context['callback_url'] = callback_url
     context['secret'] = settings.RAZOR_KEY_SECRET
     print(context)
-    return JsonResponse(json.dumps(context), safe=False)
+    return JsonResponse(context, safe=False)
 
 
 @csrf_exempt
@@ -77,17 +78,19 @@ def paymenthandler(request,name):
                     payment = Payments.objects.get(order_id=razorpay_order_id)
                     payment.payment_success = True
                     # payment.participant.payment_success = True
+                    Participant = payment.participant
+                    Participant.payment_success = True
                     payment.save()
-                    send_mail(
-                        "TNM confirmation",
-                        f'congrats participant for successfully registering for MAIT T&M in the {payment.event.event_name} event \n'
-                        f'your event will be held on {payment.event.event_date}',
-                        settings.EMAIL_HOST_USER,
-                        [f'{payment.participant.leader_email}']
-                    )
+                    # send_mail(
+                    #     "TNM confirmation",
+                    #     f'congrats participant for successfully registering for MAIT T&M in the {payment.event.event_name} event \n'
+                    #     f'your event will be held on {payment.event.event_date}',
+                    #     settings.EMAIL_HOST_USER,
+                    #     [f'{Participant.leader_email}']
+                    # )
 
                     # print(payment.id)
-                    return redirect("/")
+                    return HttpResponse(status=200)
                 except Exception as e:
                     print(e)
                     return HttpResponseBadRequest
@@ -97,7 +100,7 @@ def paymenthandler(request,name):
             except:
                 print("failure")
         #         # if there is an error while capturing payment.
-                return redirect(f'/Register/{name}')
+                return HttpResponse(status=403)
         # else:
         #
         #     # if signature verification fails.
